@@ -14,7 +14,7 @@ import numpy as np
 #import generator
 
 #importing the training and testing data 
-k=open(r"dataset2500.plk","rb")
+k=open(r"F:\datasets\cv_corpus_v1\dataset2500.plk","rb")
 dataset=pickle.load(k)
 X=[]
 Y=[]
@@ -36,20 +36,20 @@ model.add(Conv2d(64,[2,2],input_shape=[96,128,3],activation="relu",kernel_regula
 
 model.add(Dropout(0.1))
 model.add(pooling(pool_size=(2,2)))
-model.add(Conv2d(64,[4,4],activation="relu",kernel_regularizer=l2(0.01)))
+model.add(Conv2d(64,[2,2],activation="relu",kernel_regularizer=l2(0.01)))
 model.add(Dropout(0.1))
 model.add(pooling(pool_size=(2,2)))
-model.add(Conv2d(64,[3,3],activation="relu"))
+model.add(Conv2d(64,[2,2],activation="relu"))
 model.add(Dropout(0.1))
 model.add(pooling(pool_size=(3,3)))
-model.add(Conv2d(32,[3,3],activation="relu"))
+model.add(Conv2d(32,[2,2],activation="relu"))
 print("error1")
 model.add(Dropout(0.1))
-model.add(pooling(pool_size=(2,2)))
+
 model.add(Conv2d(32,[6,1],activation="relu"))
 print("error1")
 model.add(Dropout(0.1))
-model.add(keras.layers.Reshape([8,32]))
+model.add(keras.layers.Reshape([9,32]))
 model.add(GRU(50))
 #model.add(keras.layers.Reshape([150,1]))
 #model.add(GRU())
@@ -59,5 +59,5 @@ model.add(keras.layers.Dense(3,activation="softmax"))
 model.compile("Adadelta",loss='categorical_crossentropy',metrics=["accuracy"])
 checkpoint=keras.callbacks.ModelCheckpoint("{epoch}-{val_acc}",monitor='val_acc',mode="auto",save_best_only=True)
 earlystop=keras.callbacks.EarlyStopping(monitor='val_loss',patience=20)
-model.fit(np.array(X_train),np.array(Y_train),300,600,validation_data=[np.array(X_test),np.array(Y_test)],shuffle=True,callbacks=[earlystop,checkpoint])
+model.fit(np.array(X_train),np.array(Y_train),200,600,validation_data=[np.array(X_test),np.array(Y_test)],shuffle=True,callbacks=[earlystop,checkpoint])
 model.save("modelConv5gru5b300e500d.h5")
