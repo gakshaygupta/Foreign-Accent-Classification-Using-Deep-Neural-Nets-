@@ -4,6 +4,7 @@ Created on Mon Aug 20 19:39:30 2018
 
 @author: Akshay
 """
+
 # data generator
 import os 
 import numpy as np
@@ -24,18 +25,18 @@ def batch_gen(batch_size,folder,feature_shape,target_shape,c):
         except ValueError:
             batch=l.copy()
         l=list(set(l)-set(batch))
-        
+        print(batch)
         for i,j in enumerate(batch):
-            k=open(r"{0}\{1}.plk".format(folder,i),"rb")
-            data=pickle.load(k)
-            k.close()
+            alpha=open(r"{0}\{1}".format(folder,j),"rb")
+            data=pickle.load(alpha)
+            alpha.close()
             batch_features[i]=data[0].reshape(feature_shape)
             z=np.zeros(c)
             for k,g in enumerate(coll[:c]):
                 if g[0]==re.findall(r"\D+",data[1])[0]:
                     z[k]=1    
+                    print(z,k)
                     batch_target[i]=z
                     
         yield batch_features,batch_target
-
-            
+x       
